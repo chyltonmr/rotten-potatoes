@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: chylton/rootten-potatoes:v1
+          image: chylton/rootten-potatoes:1
           ports:
             - containerPort: 5000
           env:
