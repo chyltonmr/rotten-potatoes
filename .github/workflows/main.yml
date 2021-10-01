@@ -42,7 +42,7 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
           
-      - name: Deploy to Kubernetes cluster
+      - name: Deploy to Kubernetes cluster - GitHub Action
         uses: Azure/k8s-deploy@v1.3
         with:
          manifests: |
