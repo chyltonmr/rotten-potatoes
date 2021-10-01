@@ -1,0 +1,52 @@
+name: CI-CD - Digital Oceane
+
+on:
+  push:
+    branches: [ main, master ]
+    
+  workflow_dispatch:
+  
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Docker Login - GitHub Action
+        uses: docker/login-action@v1.10.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}   
+          
+      - name: Build and push - GitHub Action
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./src
+          file: ./src/Dockerfile
+          push: true
+          tags: |
+           chylton/rootten-potatoes:latest
+           chylton/rootten-potatoes:${{ github.run_number }}
+  
+  CD:
+    needs: [CI]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Kubernetes set context - GitHub Action
+        uses: Azure/k8s-set-context@v1.1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+          
+      - name: Deploy to Kubernetes cluster - GitHub Action
+        uses: Azure/k8s-deploy@v1.3
+        with:
+         manifests: |
+          k8s/deployment.yaml
+          k8s/service.yaml
+         images: chylton/rootten-potatoes:${{ github.run_number }}
+  
