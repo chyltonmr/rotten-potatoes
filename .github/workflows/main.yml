@@ -27,5 +27,5 @@ jobs:
           push: true
           tags: |
            chylton/rootten-potatoes:latest
-           chylton/rootten-potatoes:"v" + ${{ github.run_number }}
+           chylton/rootten-potatoes:{{ v }} + ${{ github.run_number }}
 
