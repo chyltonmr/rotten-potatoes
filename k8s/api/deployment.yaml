@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: chylton/rootten-potatoes:v1
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGODB_DB
+              value: "admin"
+            - name: MONGODB_HOST
+              value: "mongodb"
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_USERNAME
+              value: "mongouser"
+            - name: MONGODB_PASSWORD
+              value: "mongopwd"
