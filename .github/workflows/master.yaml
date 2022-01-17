@@ -1,4 +1,4 @@
-name: CI-CD - Digital Oceane
+name: CI-CD - Digital Oceane 
 
 on:
   push:
